@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 import {
   Card,
   CardContent,
@@ -26,19 +27,25 @@ export function AnimationPreview({
 }: AnimationPreviewProps) {
   const { t } = useTranslation()
 
-  // 애니메이션 스타일 계산
-  const getAnimationStyle = () => {
-    if (!isAnimating) return {}
-
+  const renderAnimationDemo = () => {
     switch (animationType) {
       case 'translate':
-        return { x: 200, y: 100 }
+        return (
+          <TranslateDemo
+            springConfig={springConfig}
+            isAnimating={isAnimating}
+          />
+        )
       case 'scale':
-        return { scale: 1.5 }
+        return (
+          <ScaleDemo springConfig={springConfig} isAnimating={isAnimating} />
+        )
       case 'rotate':
-        return { rotate: 180 }
+        return (
+          <RotateDemo springConfig={springConfig} isAnimating={isAnimating} />
+        )
       default:
-        return {}
+        return null
     }
   }
 
@@ -50,32 +57,11 @@ export function AnimationPreview({
       </CardHeader>
       <CardContent>
         {/* 애니메이션 미리보기 영역 */}
-        <div className="relative h-80 overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
-          {/* 애니메이션 요소 */}
-          <motion.div
-            className="absolute top-8 left-8 flex h-16 w-16 cursor-pointer items-center justify-center rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 font-bold text-white shadow-lg"
-            animate={getAnimationStyle()}
-            transition={{
-              type: 'spring',
-              stiffness: springConfig.stiffness,
-              damping: springConfig.damping,
-              mass: springConfig.mass,
-              velocity: springConfig.velocity,
-            }}
-            onClick={onTriggerAnimation}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            📦
-          </motion.div>
-
-          {/* 가이드 텍스트 */}
-          <div className="absolute bottom-4 left-4 text-sm text-gray-500">
-            {t('preview.guide')}
-          </div>
+        <div className="relative h-80 overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100">
+          {renderAnimationDemo()}
 
           {/* 애니메이션 타입 표시 */}
-          <div className="absolute top-4 right-4 rounded-md bg-white/80 px-2 py-1 text-xs font-medium text-gray-700 backdrop-blur-sm">
+          <div className="absolute top-4 right-4 rounded-md bg-white/90 px-3 py-1 text-xs font-medium text-gray-700 shadow-sm backdrop-blur-sm">
             {t(`animationType.${animationType}`)}
           </div>
         </div>
@@ -91,6 +77,222 @@ export function AnimationPreview({
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+// Translate 애니메이션 데모 - 리스트 스태거 애니메이션
+function TranslateDemo({
+  springConfig,
+  isAnimating,
+}: {
+  springConfig: SpringConfig
+  isAnimating: boolean
+}) {
+  const { t } = useTranslation()
+
+  const items = [
+    {
+      id: 1,
+      icon: '📧',
+      titleKey: 'demos.translate.notifications.newMessage.title',
+      descKey: 'demos.translate.notifications.newMessage.description',
+    },
+    {
+      id: 2,
+      icon: '🎉',
+      titleKey: 'demos.translate.notifications.achievement.title',
+      descKey: 'demos.translate.notifications.achievement.description',
+    },
+    {
+      id: 3,
+      icon: '📅',
+      titleKey: 'demos.translate.notifications.reminder.title',
+      descKey: 'demos.translate.notifications.reminder.description',
+    },
+    {
+      id: 4,
+      icon: '💝',
+      titleKey: 'demos.translate.notifications.specialOffer.title',
+      descKey: 'demos.translate.notifications.specialOffer.description',
+    },
+  ]
+
+  return (
+    <div className="flex h-full flex-col justify-center p-6">
+      <h3 className="mb-4 text-sm font-medium text-gray-600">
+        {t('demos.translate.title')}
+      </h3>
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <motion.div
+            key={item.id}
+            className="cursor-pointer rounded-lg border bg-white p-3 shadow-sm hover:shadow-md"
+            initial={{ x: -100, opacity: 0 }}
+            animate={
+              isAnimating ? { x: 0, opacity: 1 } : { x: -100, opacity: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: springConfig.stiffness,
+              damping: springConfig.damping,
+              mass: springConfig.mass,
+              velocity: springConfig.velocity,
+              delay: index * 0.1, // 스태거 효과
+            }}
+            whileHover={{ x: 8 }}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="text-lg">{item.icon}</div>
+              <div>
+                <div className="text-sm font-medium text-gray-900">
+                  {t(item.titleKey)}
+                </div>
+                <div className="text-xs text-gray-500">{t(item.descKey)}</div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Scale 애니메이션 데모 - 인터랙티브 버튼들
+function ScaleDemo({
+  springConfig,
+  isAnimating,
+}: {
+  springConfig: SpringConfig
+  isAnimating: boolean
+}) {
+  const { t } = useTranslation()
+
+  const buttons = [
+    {
+      id: 1,
+      labelKey: 'demos.scale.buttons.like',
+      icon: '❤️',
+      color: 'bg-red-500',
+    },
+    {
+      id: 2,
+      labelKey: 'demos.scale.buttons.share',
+      icon: '📤',
+      color: 'bg-blue-500',
+    },
+    {
+      id: 3,
+      labelKey: 'demos.scale.buttons.save',
+      icon: '🔖',
+      color: 'bg-green-500',
+    },
+    {
+      id: 4,
+      labelKey: 'demos.scale.buttons.more',
+      icon: '⚡',
+      color: 'bg-purple-500',
+    },
+  ]
+
+  return (
+    <div className="flex h-full flex-col items-center justify-center p-6">
+      <h3 className="mb-6 text-sm font-medium text-gray-600">
+        {t('demos.scale.title')}
+      </h3>
+      <div className="grid grid-cols-2 gap-4">
+        {buttons.map((button) => (
+          <motion.button
+            key={button.id}
+            className={`${button.color} flex flex-col items-center space-y-2 rounded-xl p-4 text-white shadow-lg`}
+            initial={{ scale: 0.8 }}
+            animate={isAnimating ? { scale: 1 } : { scale: 0.8 }}
+            transition={{
+              type: 'spring',
+              stiffness: springConfig.stiffness,
+              damping: springConfig.damping,
+              mass: springConfig.mass,
+              velocity: springConfig.velocity,
+            }}
+            whileHover={{
+              scale: 1.1,
+              transition: {
+                type: 'spring',
+                stiffness: springConfig.stiffness * 1.5,
+                damping: springConfig.damping * 0.8,
+              },
+            }}
+            whileTap={{
+              scale: 0.95,
+              transition: {
+                type: 'spring',
+                stiffness: springConfig.stiffness * 2,
+                damping: springConfig.damping * 0.5,
+              },
+            }}
+          >
+            <div className="text-2xl">{button.icon}</div>
+            <span className="text-xs font-medium">{t(button.labelKey)}</span>
+          </motion.button>
+        ))}
+      </div>
+      <p className="mt-4 text-center text-xs text-gray-500">
+        {t('demos.scale.guide')}
+      </p>
+    </div>
+  )
+}
+
+// Rotate 애니메이션 데모 - 다양한 회전 패턴
+function RotateDemo({
+  springConfig,
+  isAnimating,
+}: {
+  springConfig: SpringConfig
+  isAnimating: boolean
+}) {
+  const { t } = useTranslation()
+  const [cardFlipped, setCardFlipped] = useState(false)
+
+  return (
+    <div className="flex h-full items-center justify-center p-6">
+      {/* 카드 플립 */}
+      <div className="flex flex-col items-center space-y-2">
+        <motion.div
+          className="h-25 w-20 cursor-pointer"
+          style={{ perspective: 1000 }}
+          onClick={() => setCardFlipped(!cardFlipped)}
+        >
+          <motion.div
+            className="preserve-3d relative h-full w-full"
+            animate={
+              isAnimating || cardFlipped ? { rotateY: 180 } : { rotateY: 0 }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: springConfig.stiffness,
+              damping: springConfig.damping,
+              mass: springConfig.mass,
+              velocity: springConfig.velocity,
+            }}
+          >
+            {/* 앞면 */}
+            <div className="absolute inset-0 flex h-full w-full items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-2xl text-white backface-hidden">
+              🎴
+            </div>
+            {/* 뒷면 */}
+            <div className="absolute inset-0 flex h-full w-full rotate-y-180 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-blue-500 text-2xl text-white backface-hidden">
+              ✨
+            </div>
+          </motion.div>
+        </motion.div>
+        <span className="text-xs text-gray-600">
+          {t('demos.rotate.elements.cardFlip')}
+        </span>
+      </div>
+      <div className="absolute bottom-4 left-4 text-xs text-gray-500">
+        {t('demos.rotate.guide')}
+      </div>
+    </div>
   )
 }
 

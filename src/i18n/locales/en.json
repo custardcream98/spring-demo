@@ -45,6 +45,47 @@
     "triggerButton": "Trigger Animation",
     "currentConfig": "Current Spring Config:"
   },
+  "demos": {
+    "translate": {
+      "title": "Notification List",
+      "notifications": {
+        "newMessage": {
+          "title": "New Message",
+          "description": "You have a new message"
+        },
+        "achievement": {
+          "title": "Achievement",
+          "description": "Goal completed!"
+        },
+        "reminder": {
+          "title": "Reminder",
+          "description": "Meeting in 15 minutes"
+        },
+        "specialOffer": {
+          "title": "Special Offer",
+          "description": "50% off today only"
+        }
+      }
+    },
+    "scale": {
+      "title": "Interactive Buttons",
+      "guide": "Hover and click to see scale effects",
+      "buttons": {
+        "like": "Like",
+        "share": "Share",
+        "save": "Save",
+        "more": "More"
+      }
+    },
+    "rotate": {
+      "guide": "Click card to flip • Rotation patterns",
+      "elements": {
+        "loading": "Loading",
+        "cardFlip": "Card Flip",
+        "settings": "Settings"
+      }
+    }
+  },
   "understanding": {
     "title": "Understanding Spring Parameters",
     "stiffness": "Higher values create faster, more abrupt animations. Lower values create slower, more gradual movements.",

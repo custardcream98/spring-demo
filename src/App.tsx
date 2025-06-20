@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   Card,
@@ -14,6 +14,13 @@ import { AnimationPreview } from './components/AnimationPreview'
 import type { SpringConfig, AnimationType } from './types/spring'
 import { SPRING_PRESETS } from './types/spring'
 
+// 애니메이션 타입별 고정 지속시간 (ms)
+const ANIMATION_DURATIONS: Record<AnimationType, number> = {
+  translate: 2000, // 2초 - 리스트 아이템들이 순차적으로 나타나는 시간
+  scale: 1500, // 1.5초 - 버튼들이 스케일되는 시간
+  rotate: 3000, // 3초 - 회전 애니메이션이 완료되는 시간
+}
+
 function App() {
   const { t, i18n } = useTranslation()
   const [springConfig, setSpringConfig] = useState<SpringConfig>(
@@ -28,10 +35,18 @@ function App() {
   }
 
   // 애니메이션 트리거
-  const triggerAnimation = () => {
+  const triggerAnimation = useCallback(() => {
+    if (isAnimating) return // 이미 애니메이션 중이면 무시
+
     setIsAnimating(true)
-    setTimeout(() => setIsAnimating(false), 100)
-  }
+
+    // 애니메이션 타입에 따른 고정 지속시간 사용
+    const duration = ANIMATION_DURATIONS[animationType]
+
+    setTimeout(() => {
+      setIsAnimating(false)
+    }, duration)
+  }, [animationType, isAnimating])
 
   // Spring 값 업데이트 함수
   const updateSpringValue = (key: keyof SpringConfig, value: number) => {
@@ -209,6 +224,28 @@ function App() {
                       {t(`animationType.${type}`)}
                     </Button>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 애니메이션 상태 표시 */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Animation Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`h-3 w-3 rounded-full ${isAnimating ? 'animate-pulse bg-green-500' : 'bg-gray-300'}`}
+                  />
+                  <span className="text-sm text-gray-600">
+                    {isAnimating ? 'Animating...' : 'Ready'}
+                  </span>
+                  {isAnimating && (
+                    <span className="text-xs text-gray-500">
+                      ({ANIMATION_DURATIONS[animationType] / 1000}s)
+                    </span>
+                  )}
                 </div>
               </CardContent>
             </Card>

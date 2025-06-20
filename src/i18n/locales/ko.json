@@ -45,6 +45,47 @@
     "triggerButton": "애니메이션 실행",
     "currentConfig": "현재 스프링 설정:"
   },
+  "demos": {
+    "translate": {
+      "title": "알림 목록",
+      "notifications": {
+        "newMessage": {
+          "title": "새 메시지",
+          "description": "새로운 메시지가 있습니다"
+        },
+        "achievement": {
+          "title": "성취 달성",
+          "description": "목표를 완료했습니다!"
+        },
+        "reminder": {
+          "title": "일정 알림",
+          "description": "15분 후 회의가 있습니다"
+        },
+        "specialOffer": {
+          "title": "특가 혜택",
+          "description": "오늘만 50% 할인"
+        }
+      }
+    },
+    "scale": {
+      "title": "인터랙티브 버튼",
+      "guide": "호버하고 클릭하여 크기 효과를 확인하세요",
+      "buttons": {
+        "like": "좋아요",
+        "share": "공유",
+        "save": "저장",
+        "more": "더보기"
+      }
+    },
+    "rotate": {
+      "guide": "카드를 클릭하여 뒤집기 • 회전 패턴",
+      "elements": {
+        "loading": "로딩",
+        "cardFlip": "카드 뒤집기",
+        "settings": "설정"
+      }
+    }
+  },
   "understanding": {
     "title": "스프링 매개변수 이해하기",
     "stiffness": "높은 값은 더 빠르고 급작스러운 애니메이션을 만듭니다. 낮은 값은 더 느리고 점진적인 움직임을 만듭니다.",
