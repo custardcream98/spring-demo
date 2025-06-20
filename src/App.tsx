@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import {
   Card,
@@ -11,24 +10,9 @@ import {
 import { Button } from './components/ui/button'
 import { Slider } from './components/ui/slider'
 import { Label } from './components/ui/label'
-
-// Spring 설정 타입 정의
-interface SpringConfig {
-  stiffness: number
-  damping: number
-  mass: number
-  velocity: number
-}
-
-// 프리셋 설정들
-const SPRING_PRESETS: Record<string, SpringConfig> = {
-  default: { stiffness: 100, damping: 10, mass: 1, velocity: 0 },
-  bouncy: { stiffness: 400, damping: 17, mass: 1, velocity: 0 },
-  gentle: { stiffness: 120, damping: 14, mass: 1, velocity: 0 },
-  wobbly: { stiffness: 180, damping: 12, mass: 1, velocity: 0 },
-  stiff: { stiffness: 210, damping: 20, mass: 1, velocity: 0 },
-  slow: { stiffness: 280, damping: 60, mass: 10, velocity: 0 },
-}
+import { AnimationPreview } from './components/AnimationPreview'
+import type { SpringConfig, AnimationType } from './types/spring'
+import { SPRING_PRESETS } from './types/spring'
 
 function App() {
   const { t, i18n } = useTranslation()
@@ -36,9 +20,7 @@ function App() {
     SPRING_PRESETS.default
   )
   const [isAnimating, setIsAnimating] = useState(false)
-  const [animationType, setAnimationType] = useState<
-    'translate' | 'scale' | 'rotate'
-  >('translate')
+  const [animationType, setAnimationType] = useState<AnimationType>('translate')
 
   // 언어 변경 함수
   const changeLanguage = (lng: string) => {
@@ -59,22 +41,6 @@ function App() {
   // 프리셋 적용
   const applyPreset = (presetName: string) => {
     setSpringConfig(SPRING_PRESETS[presetName])
-  }
-
-  // 애니메이션 스타일 계산
-  const getAnimationStyle = () => {
-    if (!isAnimating) return {}
-
-    switch (animationType) {
-      case 'translate':
-        return { x: 200, y: 100 }
-      case 'scale':
-        return { scale: 1.5 }
-      case 'rotate':
-        return { rotate: 180 }
-      default:
-        return {}
-    }
   }
 
   return (
@@ -250,77 +216,12 @@ function App() {
 
           {/* 애니메이션 데모 영역 */}
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('preview.title')}</CardTitle>
-                <CardDescription>{t('preview.description')}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="relative h-80 overflow-hidden rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
-                  {/* 애니메이션 요소 */}
-                  <motion.div
-                    className="absolute top-8 left-8 flex h-16 w-16 cursor-pointer items-center justify-center rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 font-bold text-white shadow-lg"
-                    animate={getAnimationStyle()}
-                    transition={{
-                      type: 'spring',
-                      stiffness: springConfig.stiffness,
-                      damping: springConfig.damping,
-                      mass: springConfig.mass,
-                      velocity: springConfig.velocity,
-                    }}
-                    onClick={triggerAnimation}
-                  >
-                    📦
-                  </motion.div>
-
-                  {/* 가이드 텍스트 */}
-                  <div className="absolute bottom-4 left-4 text-sm text-gray-500">
-                    {t('preview.guide')}
-                  </div>
-                </div>
-
-                <div className="mt-4 space-y-4">
-                  <Button
-                    onClick={triggerAnimation}
-                    className="w-full"
-                    size="lg"
-                  >
-                    {t('preview.triggerButton')}
-                  </Button>
-
-                  {/* 현재 설정값 표시 */}
-                  <div className="rounded-lg bg-gray-50 p-4">
-                    <h4 className="mb-2 font-medium">
-                      {t('preview.currentConfig')}
-                    </h4>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div>
-                        {t('springConfiguration.stiffness.label')}:{' '}
-                        <span className="font-mono">
-                          {springConfig.stiffness}
-                        </span>
-                      </div>
-                      <div>
-                        {t('springConfiguration.damping.label')}:{' '}
-                        <span className="font-mono">
-                          {springConfig.damping}
-                        </span>
-                      </div>
-                      <div>
-                        {t('springConfiguration.mass.label')}:{' '}
-                        <span className="font-mono">{springConfig.mass}</span>
-                      </div>
-                      <div>
-                        {t('springConfiguration.velocity.label')}:{' '}
-                        <span className="font-mono">
-                          {springConfig.velocity}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <AnimationPreview
+              springConfig={springConfig}
+              isAnimating={isAnimating}
+              animationType={animationType}
+              onTriggerAnimation={triggerAnimation}
+            />
 
             {/* 설명 카드 */}
             <Card>
