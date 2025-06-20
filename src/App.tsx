@@ -227,28 +227,6 @@ function App() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* 애니메이션 상태 표시 */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Animation Status</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center space-x-2">
-                  <div
-                    className={`h-3 w-3 rounded-full ${isAnimating ? 'animate-pulse bg-green-500' : 'bg-gray-300'}`}
-                  />
-                  <span className="text-sm text-gray-600">
-                    {isAnimating ? 'Animating...' : 'Ready'}
-                  </span>
-                  {isAnimating && (
-                    <span className="text-xs text-gray-500">
-                      ({ANIMATION_DURATIONS[animationType] / 1000}s)
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* 애니메이션 데모 영역 */}
