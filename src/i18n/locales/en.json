@@ -1,0 +1,59 @@
+{
+  "title": "Motion Spring Demo",
+  "subtitle": "Adjust spring parameters and see how they affect animations in real-time",
+  "springConfiguration": {
+    "title": "Spring Configuration",
+    "description": "Adjust the spring physics parameters below",
+    "stiffness": {
+      "label": "Stiffness",
+      "description": "Controls how strong the spring force is (1-500)"
+    },
+    "damping": {
+      "label": "Damping",
+      "description": "Controls how much the spring resists motion (1-100)"
+    },
+    "mass": {
+      "label": "Mass",
+      "description": "Controls the weight of the animated object (0.1-20)"
+    },
+    "velocity": {
+      "label": "Initial Velocity",
+      "description": "Initial speed of the animation (-100 to 100)"
+    }
+  },
+  "presets": {
+    "title": "Presets",
+    "description": "Quick spring configurations",
+    "default": "Default",
+    "bouncy": "Bouncy",
+    "gentle": "Gentle",
+    "wobbly": "Wobbly",
+    "stiff": "Stiff",
+    "slow": "Slow"
+  },
+  "animationType": {
+    "title": "Animation Type",
+    "description": "Choose the type of animation to test",
+    "translate": "Translate",
+    "scale": "Scale",
+    "rotate": "Rotate"
+  },
+  "preview": {
+    "title": "Animation Preview",
+    "description": "Click the button below to trigger the animation",
+    "guide": "Click the box or the button below to animate",
+    "triggerButton": "Trigger Animation",
+    "currentConfig": "Current Spring Config:"
+  },
+  "understanding": {
+    "title": "Understanding Spring Parameters",
+    "stiffness": "Higher values create faster, more abrupt animations. Lower values create slower, more gradual movements.",
+    "damping": "Controls oscillation. Higher values reduce bouncing and create more controlled animations.",
+    "mass": "Simulates weight. Heavier objects (higher mass) move more slowly and with more momentum.",
+    "velocity": "Initial speed. Positive values start the animation with forward momentum."
+  },
+  "language": {
+    "english": "English",
+    "korean": "한국어"
+  }
+}
